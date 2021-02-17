@@ -3,7 +3,7 @@
     <div class="featured-movie">
       <router-link :to="{ name: 'MovieDetail', params: { id : 'tt7441658'}}" id="tt7441658">
         <img
-          src="../assets/black-clover.jpg"
+          src="https://res.cloudinary.com/juwon-tech/image/upload/v1613584376/black-clover_tolbsg.jpg"
           alt="Black Clover Poster"
           class="featured-movie-img"
         />
@@ -46,7 +46,7 @@
               <img
                 :src="
                   movie.Poster === 'N/A'
-                    ? require('../assets/no-movie-poster.jpg')
+                    ? 'https://res.cloudinary.com/juwon-tech/image/upload/v1613584373/no-movie-poster_pzebas.jpg'
                     : movie.Poster
                 "
                 :alt="movie.Title + 'Poster'"

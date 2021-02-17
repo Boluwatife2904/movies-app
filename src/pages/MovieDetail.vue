@@ -2,7 +2,14 @@
   <div class="single-movie">
     <div class="poster-and-details">
       <div class="movie-poster">
-        <img :src="movie.Poster" :alt="movie.Title + 'Poster'" />
+        <img
+          :src="
+            movie.Poster === 'N/A'
+              ? 'https://res.cloudinary.com/juwon-tech/image/upload/v1613584373/no-movie-poster_pzebas.jpg'
+              : movie.Poster
+          "
+          :alt="movie.Title + 'Poster'"
+        />
         <span class="type">{{ movie.Type }}</span>
       </div>
       <div class="movie-details">
