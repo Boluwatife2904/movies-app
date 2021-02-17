@@ -74,7 +74,6 @@ export default {
     fetch(`http://www.omdbapi.com/?apikey=${env.apikey}&i=${this.id}&plot=full`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         this.movie = data;
       });
   },
