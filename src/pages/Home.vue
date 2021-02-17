@@ -78,7 +78,7 @@ export default {
   methods: {
     searchMovies() {
       if (this.search != "") {
-        fetch(`http://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
+        fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);

@@ -71,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    fetch(`http://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
+    fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
       .then((response) => response.json())
       .then((data) => {
         this.movie = data;
