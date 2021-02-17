@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import env from "@/env.js";
+// import env from "@/env.js";
 
 export default {
   name: "Home",
@@ -78,11 +78,11 @@ export default {
   methods: {
     searchMovies() {
       if (this.search != "") {
-        fetch(`http://www.omdbapi.com/?apikey=${env.apikey}&s=${this.search}`)
+        fetch(`http://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             this.movies = data.Search;
-            // this.search = "";
           });
       }
     },

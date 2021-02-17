@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import env from "../env.js";
+// import env from "../env.js";
 export default {
   props: ["id"],
   data() {
@@ -71,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    fetch(`http://www.omdbapi.com/?apikey=${env.apikey}&i=${this.id}&plot=full`)
+    fetch(`http://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
       .then((response) => response.json())
       .then((data) => {
         this.movie = data;
