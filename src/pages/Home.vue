@@ -49,11 +49,16 @@
     <div class="error-box" v-if="!loading && error">
       <span>&#x1F615; </span>
       <p>
-        Sorry but there has been an error, and
-        we are currently unable to provide you with details about your requested
-        movie for now due to some reasons.
+        Sorry but there has been an error, and we are currently unable to
+        provide you with details about your requested movie for now due to some
+        reasons.
       </p>
       <base-button @click="hideError">Try Again</base-button>
+    </div>
+
+    <div class="empty" :class="{ show: emptyInput }">
+      <img src="../assets/alert-triangle.svg" alt="" />
+      You have not entered any value
     </div>
   </div>
 </template>
@@ -76,12 +81,16 @@ export default {
       error: false,
       search: "",
       movies: [],
+      emptyInput: false,
     };
   },
   methods: {
     searchMovies() {
       if (this.search === "") {
-        alert("You have not entered any value");
+        this.emptyInput = true;
+        setTimeout(() => {
+          this.emptyInput = false;
+        }, 2000);
       } else {
         this.loading = true;
         this.movies = [];
@@ -112,15 +121,41 @@ export default {
           });
       }
     },
-    hideError(){
+    hideError() {
       this.loading = false;
       this.error = false;
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss">
+.empty {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background: rgb(255, 145, 0);
+  position: absolute;
+  top: 80px;
+  right: -100%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 20px 30px;
+  z-index: 999;
+  transition: all 0.5s ease-in-out;
+
+  &.show {
+    right: 10px;
+  }
+
+  img{
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+  }
+}
+
 .home {
   .featured-movie {
     position: relative;
@@ -272,11 +307,11 @@ export default {
       margin-left: auto;
       margin-right: auto;
 
-      @media screen and (max-width: 768px){
+      @media screen and (max-width: 768px) {
         width: 80%;
       }
 
-      @media screen and (max-width: 576px){
+      @media screen and (max-width: 576px) {
         width: 100%;
       }
     }

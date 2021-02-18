@@ -82,7 +82,7 @@ export default {
       movie: null,
     };
   },
-  mounted() {
+  created() {
     this.loading = true;
     fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
       .then((response) => response.json())
@@ -90,7 +90,7 @@ export default {
         this.movie = data;
         setTimeout(() => {
           this.loading = false;
-        }, 1500);
+        }, 1200);
       });
   },
 };

@@ -26,6 +26,7 @@ html {
 body {
   font-family: "Quicksand", sans-serif;
   background-color: #35495e;
+  overflow: hidden;
 }
 
 a {
