@@ -1,61 +1,73 @@
 <template>
-  <div class="single-movie">
-    <div class="poster-and-details">
-      <div class="movie-poster">
-        <img
-          :src="
-            movie.Poster === 'N/A'
-              ? 'https://res.cloudinary.com/juwon-tech/image/upload/v1613584373/no-movie-poster_pzebas.jpg'
-              : movie.Poster
-          "
-          :alt="movie.Title + 'Poster'"
-        />
-        <span class="type">{{ movie.Type }}</span>
-      </div>
-      <div class="movie-details">
-        <h4 class="title">{{ movie.Title }}</h4>
-        <p class="plot">{{ movie.Plot }}</p>
-        <p class="actors"><span>Starring:</span> {{ movie.Actors }}</p>
-        <p class="country"><span>Country:</span> {{ movie.Country }}</p>
-        <p class="writer"><span>Writer:</span> {{ movie.Writer }}</p>
-        <p class="awards"><span>Awards:</span> {{ movie.Awards }}</p>
-      </div>
+  <div class="content">
+    <!-- LOADER -->
+    <div class="loading-box" v-if="loading">
+      <div class="scaling-bar-loader"></div>
+      <div class="scaling-bar-loader"></div>
+      <div class="scaling-bar-loader"></div>
+      <div class="scaling-bar-loader"></div>
     </div>
-    <h3 class="more-header">More Details</h3>
-    <div class="more-details">
-      <div class="single-detail">
-        <h6>Genre:</h6>
-        <span> {{ movie.Genre }}</span>
+
+    <div class="single-movie" v-else>
+      <div class="poster-and-details">
+        <div class="movie-poster">
+          <img
+            :src="
+              movie.Poster === 'N/A'
+                ? 'https://res.cloudinary.com/juwon-tech/image/upload/v1613584373/no-movie-poster_pzebas.jpg'
+                : movie.Poster
+            "
+            :alt="movie.Title + 'Poster'"
+          />
+          <span class="type">{{ movie.Type }}</span>
+        </div>
+        <div class="movie-details">
+          <h4 class="title">{{ movie.Title }}</h4>
+          <p class="plot">{{ movie.Plot }}</p>
+          <p class="actors"><span>Starring:</span> {{ movie.Actors }}</p>
+          <p class="country"><span>Country:</span> {{ movie.Country }}</p>
+          <p class="writer"><span>Writer:</span> {{ movie.Writer }}</p>
+          <p class="awards"><span>Awards:</span> {{ movie.Awards }}</p>
+        </div>
       </div>
-      <div class="single-detail">
-        <h6>Language:</h6>
-        <span> {{ movie.Language }}</span>
-      </div>
-      <div class="single-detail">
-        <h6>Released:</h6>
-        <span> {{ movie.Released }}</span>
-      </div>
-      <div class="single-detail">
-        <h6>Runtime:</h6>
-        <span> {{ movie.Runtime }}</span>
-      </div>
-      <div class="single-detail">
-        <h6>Rated:</h6>
-        <span> {{ movie.Rated }}</span>
-      </div>
-      <div class="single-detail">
-        <h6>Director:</h6>
-        <span> {{ movie.Director }}</span>
-      </div>
-      <div class="single-detail">
-        <h6>Rating:</h6>
-        <span> {{ movie.imdbRating }}/10</span>
-      </div>
-      <div class="single-detail">
-        <h6>Seasons:</h6>
-        <span>
-          {{ movie.totalSeasons ? movie.totalSeasons : "Not Available" }}</span
-        >
+      <h3 class="more-header">More Details</h3>
+      <div class="more-details">
+        <div class="single-detail">
+          <h6>Genre:</h6>
+          <span> {{ movie.Genre }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Language:</h6>
+          <span> {{ movie.Language }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Released:</h6>
+          <span> {{ movie.Released }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Runtime:</h6>
+          <span> {{ movie.Runtime }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Rated:</h6>
+          <span> {{ movie.Rated }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Director:</h6>
+          <span> {{ movie.Director }}</span>
+        </div>
+        <div class="single-detail">
+          <h6>Rating:</h6>
+          <span> {{ movie.imdbRating }}/10</span>
+        </div>
+        <div class="single-detail">
+          <h6>Seasons:</h6>
+          <span>
+            {{
+              movie.totalSeasons ? movie.totalSeasons : "Not Available"
+            }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -66,14 +78,19 @@ export default {
   props: ["id"],
   data() {
     return {
-      movie: {},
+      loading: true,
+      movie: null,
     };
   },
   mounted() {
+    this.loading = true;
     fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
       .then((response) => response.json())
       .then((data) => {
         this.movie = data;
+        setTimeout(() => {
+          this.loading = false;
+        }, 1500);
       });
   },
 };
@@ -212,6 +229,59 @@ export default {
         display: inline-block;
       }
     }
+  }
+}
+
+// LOADER
+.loading-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .scaling-bar-loader {
+    display: inline-block;
+    height: 50px;
+    width: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    background: #42b883;
+    animation: scaling 800ms ease infinite;
+
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@keyframes scaling {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1, 2);
+  }
+  40% {
+    transform: scale(1);
   }
 }
 </style>
