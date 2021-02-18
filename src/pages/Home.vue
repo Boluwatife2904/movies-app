@@ -29,12 +29,12 @@
       <input
         type="text"
         placeholder="Search for your favorite movies..."
-        v-model="search"
+        v-model.trim="search"
       />
-      <button type="submit">Search</button>
+      <base-button>Search</base-button>
     </form>
 
-    <div class="movies-list" v-if="loading">
+    <div class="loading-list" v-if="loading">
       <skeleton-loader v-for="i in 10" :key="i"></skeleton-loader>
     </div>
 
@@ -45,10 +45,21 @@
         :movie="movie"
       ></single-movie>
     </div>
+
+    <div class="error-box" v-if="!loading && error">
+      <span>&#x1F615; </span>
+      <p>
+        Sorry but there has been an error, and
+        we are currently unable to provide you with details about your requested
+        movie for now due to some reasons.
+      </p>
+      <base-button @click="hideError">Try Again</base-button>
+    </div>
   </div>
 </template>
 
 <script>
+import BaseButton from "../components/BaseButton.vue";
 import SingleMovie from "../components/SingleMovie.vue";
 import SkeletonLoader from "../components/SkeletonLoader.vue";
 
@@ -57,18 +68,23 @@ export default {
   components: {
     SingleMovie,
     SkeletonLoader,
+    BaseButton,
   },
   data() {
     return {
       loading: false,
+      error: false,
       search: "",
       movies: [],
     };
   },
   methods: {
     searchMovies() {
-      if (this.search != "") {
+      if (this.search === "") {
+        alert("You have not entered any value");
+      } else {
         this.loading = true;
+        this.movies = [];
         fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
           .then((response) => {
             if (response.ok) {
@@ -85,14 +101,20 @@ export default {
               setTimeout(() => {
                 this.loading = false;
               }, 3500);
+              this.error = true;
             }
           })
           .catch((error) => {
             console.log(error);
             this.loading = false;
+            this.error = true;
           });
       }
     },
+    hideError(){
+      this.loading = false;
+      this.error = false;
+    }
   },
 };
 </script>
@@ -206,39 +228,6 @@ export default {
     }
 
     button {
-      font: inherit;
-      background-color: #42b883;
-      color: #fff;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      border-radius: 6px;
-      padding: 14px 16px;
-      text-transform: uppercase;
-      transition: 0.4s;
-      width: 150px;
-      font-family: "Quicksand", sans-serif;
-      font-weight: 600;
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-
-      &::after {
-        position: absolute;
-        content: "";
-        height: 100%;
-        width: 0%;
-        top: 0;
-        left: 0;
-        background-color: #3b8070;
-        z-index: -1;
-        transition: all 0.4s ease-in-out;
-      }
-
-      &:hover::after {
-        width: 100%;
-      }
-
       @media (max-width: 576px) {
         width: 100%;
       }
@@ -255,6 +244,40 @@ export default {
 
     @media screen and (max-width: 1360px) {
       justify-content: space-between;
+    }
+  }
+
+  .error-box {
+    background-color: #496583;
+    padding: 40px;
+    text-align: center;
+    width: 85%;
+    margin: 0 auto 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+
+    span {
+      font-size: 50px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #fff;
+      font-size: 18px;
+      line-height: 30px;
+      margin-bottom: 15px;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+
+      @media screen and (max-width: 768px){
+        width: 80%;
+      }
+
+      @media screen and (max-width: 576px){
+        width: 100%;
+      }
     }
   }
 }

@@ -41,7 +41,7 @@
       rgb(211, 209, 211) 50%,
       transparent 100%
     );
-    animation: load 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: shimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
   @media (max-width: 1120px) {
@@ -69,7 +69,7 @@
       .img-box {
         height: 275px;
         width: 100%;
-        background-color: #ececec;
+        background-color: rgb(200, 200, 200);
       }
     }
 
@@ -78,7 +78,7 @@
       flex: 1 1 100%;
 
       .year {
-        background-color: #ececec;
+        background-color: rgb(200, 200, 200);
         font-size: 15px;
         height: 16px;
         width: 60px;
@@ -86,7 +86,7 @@
       }
 
       .title {
-        background-color: #ececec;
+        background-color: rgb(200, 200, 200);
         font-weight: 600;
         height: 18px;
         width: 250px;
@@ -95,11 +95,11 @@
   }
 }
 
-@keyframes load {
-  from {
+@keyframes shimmer {
+  0% {
     left: -150px;
   }
-  to {
+  100% {
     left: 100%;
   }
 }
