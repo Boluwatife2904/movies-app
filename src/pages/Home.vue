@@ -56,12 +56,10 @@
       <base-button @click="hideError">Try Again</base-button>
     </div>
 
-    <teleport to="body">
-      <div class="empty" :class="{ show: emptyInput }">
-        <img src="../assets/alert-triangle.svg" alt="" />
-        You have not entered any value
-      </div>
-    </teleport>
+    <div class="empty" :class="{ show: emptyInput }">
+      <img src="../assets/alert-triangle.svg" alt="" />
+      You have not entered any value
+    </div>
   </div>
 </template>
 
@@ -138,8 +136,8 @@ export default {
   border-radius: 4px;
   background: rgb(255, 145, 0);
   position: absolute;
-  top: 80px;
-  right: -9999px;
+  top: -100%;
+  right: 16px;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -148,7 +146,7 @@ export default {
   transition: all 0.5s ease-in-out;
 
   &.show {
-    right: 10px;
+    top: 60px;
   }
 
   img {
@@ -159,6 +157,7 @@ export default {
 }
 
 .home {
+
   .featured-movie {
     position: relative;
     margin-bottom: 10px;
