@@ -70,12 +70,26 @@ export default {
       if (this.search != "") {
         this.loading = true;
         fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+          })
           .then((data) => {
-            this.movies = data.Search;
-            setTimeout(() => {
-              this.loading = false;
-            }, 1500);
+            if (data.Search) {
+              this.movies = data.Search;
+              setTimeout(() => {
+                this.loading = false;
+              }, 1500);
+            } else {
+              setTimeout(() => {
+                this.loading = false;
+              }, 3500);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.loading = false;
           });
       }
     },
