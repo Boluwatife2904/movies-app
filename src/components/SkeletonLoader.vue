@@ -26,6 +26,7 @@
   position: relative;
   overflow: hidden;
   background: #fff;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.12);
 
    &::before {
     content: "";
@@ -36,7 +37,7 @@
     height: 100%;
     width: 150px;
     background: linear-gradient(
-      to right,
+      90deg,
       transparent 0%,
       rgb(211, 209, 211) 50%,
       transparent 100%
@@ -69,7 +70,7 @@
       .img-box {
         height: 275px;
         width: 100%;
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(220, 220, 220);
       }
     }
 
@@ -78,7 +79,7 @@
       flex: 1 1 100%;
 
       .year {
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(220, 220, 220);
         font-size: 15px;
         height: 16px;
         width: 60px;
@@ -86,7 +87,7 @@
       }
 
       .title {
-        background-color: rgb(200, 200, 200);
+        background-color: rgb(220, 220, 220);
         font-weight: 600;
         height: 18px;
         width: 250px;

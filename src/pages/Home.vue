@@ -280,7 +280,7 @@ export default {
     margin: 0 auto;
 
     @media screen and (max-width: 1360px) {
-      justify-content: space-between;
+      justify-content: space-evenly;
     }
   }
 
