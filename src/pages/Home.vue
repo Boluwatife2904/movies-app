@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <div class="featured-movie">
-      <router-link :to="{ name: 'MovieDetail', params: { id : 'tt7441658'}}" id="tt7441658">
+      <router-link
+        :to="{ name: 'MovieDetail', params: { id: 'tt7441658' } }"
+        id="tt7441658"
+      >
         <img
           src="https://res.cloudinary.com/juwon-tech/image/upload/v1613584376/black-clover_tolbsg.jpg"
           alt="Black Clover Poster"
@@ -10,8 +13,11 @@
         <div class="featured-movie-detail">
           <h4>Black Clover</h4>
           <p>
-            Black Clover (Japanese: ブラッククローバー, Hepburn: Burakku Kurōbā)
-            is a Japanese manga series written and illustrated by Yūki Tabata.
+            <span
+              >Black Clover (Japanese: ブラッククローバー, Hepburn: Burakku
+              Kurōbā) is a Japanese manga series written and illustrated by Yūki
+              Tabata.</span
+            >
             The story centers around Asta, a young boy seemingly born without
             any magic power, something that is unknown in the world he lives in.
           </p>
@@ -28,49 +34,33 @@
       <button type="submit">Search</button>
     </form>
 
-    <div class="search-results" v-if="movies.length > 0">
-      <h3>Search results for {{ search }}</h3>
+    <div class="movies-list" v-if="loading">
+      <skeleton-loader v-for="i in 10" :key="i"></skeleton-loader>
+    </div>
 
-      <div class="movies-list">
-        <div
-          class="movie"
-          v-for="movie in movies"
-          :key="movie.imdbID"
-          :id="movie.imdbID"
-        >
-          <router-link
-            :to="{ name: 'MovieDetail', params: { id: movie.imdbID } }"
-            class="movie-link"
-          >
-            <div class="movie-poster">
-              <img
-                :src="
-                  movie.Poster === 'N/A'
-                    ? 'https://res.cloudinary.com/juwon-tech/image/upload/v1613584373/no-movie-poster_pzebas.jpg'
-                    : movie.Poster
-                "
-                :alt="movie.Title + 'Poster'"
-              />
-              <span class="type"> {{ movie.Type }}</span>
-            </div>
-            <div class="movie-detail">
-              <p class="year">{{ movie.Year }}</p>
-              <h4 class="title">{{ movie.Title }}</h4>
-            </div>
-          </router-link>
-        </div>
-      </div>
+    <div class="movies-list" v-if="!loading && movies.length > 0">
+      <single-movie
+        v-for="movie in movies"
+        :key="movie.imdbID"
+        :movie="movie"
+      ></single-movie>
     </div>
   </div>
 </template>
 
 <script>
-// import env from "@/env.js";
+import SingleMovie from "../components/SingleMovie.vue";
+import SkeletonLoader from "../components/SkeletonLoader.vue";
 
 export default {
   name: "Home",
+  components: {
+    SingleMovie,
+    SkeletonLoader,
+  },
   data() {
     return {
+      loading: false,
       search: "",
       movies: [],
     };
@@ -78,10 +68,11 @@ export default {
   methods: {
     searchMovies() {
       if (this.search != "") {
+        this.loading = true;
         fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            this.loading = false;
             this.movies = data.Search;
           });
       }
@@ -94,16 +85,25 @@ export default {
 .home {
   .featured-movie {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
 
     .featured-movie-img {
       display: block;
       height: 500px;
       width: 100%;
-      // object-fit: contain;
-
       position: relative;
       z-index: 0;
+
+      @media screen and (max-width: 576px) {
+        height: 400px;
+      }
     }
 
     .featured-movie-detail {
@@ -114,10 +114,18 @@ export default {
       background-color: rgba(0, 0, 0, 0.7);
       z-index: 1;
 
+      @media screen and (max-width: 576px) {
+        padding-bottom: 35px;
+      }
+
       h4 {
         font-size: 30px;
         margin-bottom: 12px;
         color: #fff;
+
+        @media screen and (max-width: 576px) {
+          font-size: 24px;
+        }
       }
 
       p {
@@ -125,6 +133,16 @@ export default {
         color: #fff;
         line-height: 30px;
         margin-bottom: 0;
+
+        @media screen and (max-width: 576px) {
+          font-size: 16px;
+        }
+
+        span {
+          @media screen and (max-width: 576px) {
+            display: none;
+          }
+        }
       }
     }
   }
@@ -151,7 +169,7 @@ export default {
       width: 100%;
       background-color: #496583;
       color: #fff;
-      font-size: 20px;
+      font-size: 18px;
       padding: 12px 16px;
       border-radius: 6px;
       margin-right: 20px;
@@ -211,96 +229,16 @@ export default {
     }
   }
 
-  .search-results {
+  .loading-list,
+  .movies-list {
     padding: 10px 50px 50px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0 auto;
 
-    h3{
-      color: #fff;
-      margin-bottom: 30px;
-    }
-
-    .movies-list {
-      display: flex;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      margin: 0 auto;
-
-      @media screen and (max-width: 1360px) {
-        justify-content: space-between;
-      }
-
-      .movie {
-        max-width: 280px;
-        width: 25%;
-        flex: 1 1 280px;
-        border-radius: 8px;
-        overflow: hidden;
-        margin-bottom: 30px;
-        margin-right: 2.5%;
-
-        @media (max-width: 1120px) {
-          width: 50%;
-          flex: 1 1 50%;
-        }
-
-        @media (max-width: 576px) {
-          width: 100%;
-          flex: 1 1 100%;
-        }
-
-        @media (max-width: 800px) {
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .movie-link {
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          text-decoration: none;
-
-          .movie-poster {
-            position: relative;
-            display: block;
-
-            img {
-              display: block;
-              height: 275px;
-              width: 100%;
-              // object-fit: cover;
-            }
-
-            .type {
-              position: absolute;
-              bottom: 8px;
-              left: 8px;
-              background-color: #42b883;
-              color: #fff;
-              padding: 12px 16px;
-              text-transform: capitalize;
-              font-weight: 600;
-              border-radius: 4px;
-            }
-          }
-
-          .movie-detail {
-            background-color: #496583;
-            padding: 16px 8px;
-            flex: 1 1 100%;
-
-            .year {
-              color: rgb(223, 223, 223);
-              font-size: 15px;
-            }
-
-            .title {
-              color: #fff;
-              font-weight: 600;
-              font-size: 18px;
-            }
-          }
-        }
-      }
+    @media screen and (max-width: 1360px) {
+      justify-content: space-between;
     }
   }
 }

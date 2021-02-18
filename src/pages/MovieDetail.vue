@@ -62,7 +62,6 @@
 </template>
 
 <script>
-// import env from "../env.js";
 export default {
   props: ["id"],
   data() {
@@ -94,7 +93,6 @@ export default {
 
   .poster-and-details {
     display: flex;
-    // align-items: center;
     justify-content: space-between;
 
     @media screen and (max-width: 992px) {
@@ -121,7 +119,7 @@ export default {
 
       .type {
         position: absolute;
-        bottom: 8px;
+        top: 8px;
         left: 8px;
         background-color: #42b883;
         color: #fff;
@@ -163,6 +161,7 @@ export default {
       .actors {
         color: #fff;
         line-height: 30px;
+        font-weight: 500;
 
         span {
           display: inline-block;
@@ -209,6 +208,7 @@ export default {
       span {
         font-size: 18px;
         color: #fff;
+        font-weight: 500;
         display: inline-block;
       }
     }
