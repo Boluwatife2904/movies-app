@@ -97,6 +97,7 @@ export default {
               setTimeout(() => {
                 this.loading = false;
               }, 1500);
+              this.error = false;
             } else {
               setTimeout(() => {
                 this.loading = false;
