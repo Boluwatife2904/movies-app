@@ -72,8 +72,10 @@ export default {
         fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${this.search}`)
           .then((response) => response.json())
           .then((data) => {
-            this.loading = false;
             this.movies = data.Search;
+            setTimeout(() => {
+              this.loading = false;
+            }, 1500);
           });
       }
     },
