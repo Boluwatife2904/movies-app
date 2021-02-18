@@ -56,10 +56,12 @@
       <base-button @click="hideError">Try Again</base-button>
     </div>
 
-    <div class="empty" :class="{ show: emptyInput }">
-      <img src="../assets/alert-triangle.svg" alt="" />
-      You have not entered any value
-    </div>
+    <teleport to="body">
+      <div class="empty" :class="{ show: emptyInput }">
+        <img src="../assets/alert-triangle.svg" alt="" />
+        You have not entered any value
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -137,7 +139,7 @@ export default {
   background: rgb(255, 145, 0);
   position: absolute;
   top: 80px;
-  right: -100%;
+  right: -9999px;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -149,7 +151,7 @@ export default {
     right: 10px;
   }
 
-  img{
+  img {
     margin-right: 10px;
     height: 20px;
     width: 20px;
