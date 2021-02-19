@@ -57,7 +57,7 @@
     </div>
 
     <div class="empty" :class="{ show: emptyInput }">
-      <img src="../assets/alert-triangle.svg" alt="" />
+      <img src="../assets/alert-triangle.svg" alt="Alert Triangle" />
       You have not entered any value
     </div>
   </div>
