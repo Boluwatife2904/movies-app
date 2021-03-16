@@ -1,5 +1,8 @@
 # movie-app
 
+## Project Live Preview
+[Project Live Preview](https://movies-app-eta.vercel.app)
+
 ## Project setup
 ```
 npm install
