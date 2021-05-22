@@ -1,15 +1,19 @@
 <template>
   <div class="app">
-    <header>
-      <router-link :to="{ name: 'Home' }">
-        <h1><span>Movies</span>Zone</h1>
-      </router-link>
-    </header>
+    <SiteNavbar />
     <main>
       <router-view />
     </main>
   </div>
 </template>
+
+<script>
+import SiteNavbar from "@/components/SiteNavbar.vue"
+export default {
+  name: "App",
+  components: { SiteNavbar }
+}
+</script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
@@ -30,22 +34,5 @@ body {
 
 a {
   text-decoration: none;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  background-color: #2c3d4e;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
-
-  h1 {
-    color: #fff;
-
-    span {
-      color: #42b883;
-    }
-  }
 }
 </style>

@@ -17,9 +17,6 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   margin: 0 auto;
-
-  @media screen and (max-width: 1360px) {
-    justify-content: space-evenly;
-  }
+  width: 100%;
 }
 </style>
