@@ -78,7 +78,7 @@ export default {
   props: ["id"],
   data() {
     return {
-      loading: true,
+      loading: false,
       movie: null,
     };
   },
@@ -90,7 +90,7 @@ export default {
         this.movie = data;
         setTimeout(() => {
           this.loading = false;
-        }, 1200);
+        }, 800);
       });
   },
 };
