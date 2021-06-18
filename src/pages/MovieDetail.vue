@@ -1,14 +1,14 @@
 <template>
   <div class="content">
     <!-- LOADER -->
-    <div class="loading-box" v-if="loading">
+    <div class="loading-box" v-if="isLoading">
       <div class="scaling-bar-loader"></div>
       <div class="scaling-bar-loader"></div>
       <div class="scaling-bar-loader"></div>
       <div class="scaling-bar-loader"></div>
     </div>
 
-    <div class="single-movie" v-else>
+    <div class="single-movie" v-else-if="!isLoading && movie">
       <div class="poster-and-details">
         <div class="movie-poster">
           <img
@@ -74,24 +74,39 @@
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: ["id"],
-  data() {
-    return {
-      loading: false,
-      movie: null,
-    };
-  },
-  created() {
-    this.loading = true;
-    fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&i=${this.id}&plot=full`)
-      .then((response) => response.json())
-      .then((data) => {
-        this.movie = data;
+  setup(props) {
+    // Data
+    const isLoading = ref(false);
+    const movie = ref(null);
+    const error = ref(null)
+    // Methods
+    const fetchMovieDetails = async (id) => {
+      isLoading.value = true;
+      try {
+        const response = await fetch(
+          `https://www.omdbapi.com/?apikey=c4ee6fc4&i=${id}&plot=full`
+        );
+        const responseData = await response.json();
+        if(responseData.Error) {
+          const error = new Error(responseData.Error)
+          throw error;
+        }
+        movie.value = responseData;
         setTimeout(() => {
-          this.loading = false;
+          isLoading.value = false;
         }, 800);
-      });
+      } catch(err) {
+        isLoading.value = false;
+        error.value = err;
+      }
+    };
+
+    fetchMovieDetails(props.id);
+
+    return { isLoading, movie };
   },
 };
 </script>
