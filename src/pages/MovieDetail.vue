@@ -8,7 +8,7 @@
       <div class="scaling-bar-loader"></div>
     </div>
 
-    <div class="single-movie" v-else-if="!isLoading && movie">
+    <div class="single-movie" v-else-if="!isLoading && !error && movie">
       <div class="poster-and-details">
         <div class="movie-poster">
           <img
@@ -70,18 +70,27 @@
         </div>
       </div>
     </div>
+
+    <Error
+      :errorCode="404"
+      errorName="Movie Not Found"
+      errorMessage="Ooops.... It seems like you have provided us with an Incorrect IMDB Id and thus we couldn't find any movie matching that particular id."
+      v-else-if="!isLoading && error"
+    />
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
+import Error from "../components/Error.vue";
 export default {
+  components: { Error },
   props: ["id"],
   setup(props) {
     // Data
     const isLoading = ref(false);
     const movie = ref(null);
-    const error = ref(null)
+    const error = ref(false);
     // Methods
     const fetchMovieDetails = async (id) => {
       isLoading.value = true;
@@ -90,23 +99,24 @@ export default {
           `https://www.omdbapi.com/?apikey=c4ee6fc4&i=${id}&plot=full`
         );
         const responseData = await response.json();
-        if(responseData.Error) {
-          const error = new Error(responseData.Error)
-          throw error;
+        if (responseData.Error) {
+          const err = new Error(responseData.Error || "An Error occured!");
+          throw err;
+        } else {
+          movie.value = responseData;
+          setTimeout(() => {
+            isLoading.value = false;
+          }, 500);
         }
-        movie.value = responseData;
-        setTimeout(() => {
-          isLoading.value = false;
-        }, 800);
-      } catch(err) {
+      } catch {
         isLoading.value = false;
-        error.value = err;
+        error.value = true;
       }
     };
 
     fetchMovieDetails(props.id);
 
-    return { isLoading, movie };
+    return { isLoading, movie, error };
   },
 };
 </script>
