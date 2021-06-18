@@ -1,7 +1,7 @@
 <template>
   <header>
     <router-link :to="{ name: 'Home' }">
-      <h1><span>Movies</span>Zone</h1>
+      <h1>Fi<span>ndAMov</span>ie</h1>
     </router-link>
   </header>
 </template>

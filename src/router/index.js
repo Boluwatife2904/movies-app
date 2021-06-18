@@ -6,12 +6,18 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      title: "Home || FindAMovie"
+    }
   },
   {
     path: "/movie/:id",
     name: "MovieDetail",
     component: () => import("../pages/MovieDetail.vue"),
     props: true,
+    meta: {
+      title: "Movie Details || FindAMovie"
+    }
   },
 ];
 
@@ -27,5 +33,10 @@ const router = createRouter({
         };
   },
 });
+
+router.beforeEach((to, _, next) => {
+  document.title = to.meta.title;
+  next();
+})
 
 export default router;
