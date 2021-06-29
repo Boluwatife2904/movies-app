@@ -4,7 +4,7 @@
 
     <!-- SEARCH FORM -->
     <SearchForm @start-search="searchMovies" />
-    
+
     <!-- SKELETON LOADING -->
     <flex-container v-if="loading">
       <skeleton-loader v-for="i in 10" :key="i"></skeleton-loader>
@@ -23,11 +23,12 @@
     <ErrorMessage v-if="!loading && error" @hide-error="hideError" />
 
     <!-- ALERT  -->
-    <Alert message="You have not entered any value" :visible="emptyInput"/>
+    <Alert message="You have not entered any value" :visible="emptyInput" />
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import FeaturedMovie from "../components/FeaturedMovie.vue";
 import SingleMovie from "../components/SingleMovie.vue";
 import SkeletonLoader from "../components/SkeletonLoader.vue";
@@ -45,26 +46,23 @@ export default {
     FlexContainer,
     Alert,
     ErrorMessage,
-    SearchForm
+    SearchForm,
   },
-  data() {
-    return {
-      loading: false,
-      error: false,
-      movies: [],
-      emptyInput: false,
-    };
-  },
-  methods: {
-    searchMovies(search) {
-      if (search === "") {
-        this.emptyInput = true;
+  setup() {
+    const loading = ref(false);
+    const error = ref(false);
+    const movies = ref([]);
+    const emptyInput = ref(false);
+
+    const searchMovies = (term) => {
+      if (term === "") {
+        emptyInput.value = true;
         setTimeout(() => {
-          this.emptyInput = false;
+          emptyInput.value = false;
         }, 2000);
       } else {
-        this.loading = true;
-        fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${search}`)
+        loading.value = true;
+        fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${term}`)
           .then((response) => {
             if (response.ok) {
               return response.json();
@@ -72,29 +70,28 @@ export default {
           })
           .then((data) => {
             if (data.Search) {
-              this.movies = data.Search;
+              movies.value = data.Search;
               setTimeout(() => {
-                this.loading = false;
-              }, 1500);
-              this.error = false;
+                loading.value = false;
+              }, 1000);
+              error.value = false;
             } else {
-              setTimeout(() => {
-                this.loading = false;
-              }, 3500);
-              this.error = true;
+              error.value = true;
             }
           })
-          .catch((error) => {
-            console.log(error);
-            this.loading = false;
-            this.error = true;
+          .catch(() => {
+            loading.value = false;
+            error.value = true;
           });
       }
-    },
-    hideError() {
-      this.loading = false;
-      this.error = false;
-    },
+    };
+
+    const hideError = () => {
+      loading.value = false;
+      error.value = false;
+    };
+
+    return { loading, error, movies, emptyInput, searchMovies, hideError };
   },
 };
 </script>

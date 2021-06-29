@@ -10,19 +10,19 @@
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   name: "SearchForm",
   emits: ["start-search"],
-  data() {
-    return {
-      search: "",
-    };
-  },
-  methods: {
-    searchMovies() {
-      this.$emit("start-search", this.search);
-    },
-  },
+  setup(_, context) {
+    const search = ref("");
+
+    const searchMovies = () => {
+      context.emit("start-search", search.value)
+    }
+    
+    return { search, searchMovies }
+  }
 };
 </script>
 

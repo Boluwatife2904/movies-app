@@ -5,19 +5,14 @@
       Sorry but there has been an error, and we are currently unable to provide
       you with details about your requested movie for now due to some reasons.
     </p>
-    <base-button @click="hideError">Try Again</base-button>
+    <base-button @click="$emit('hide-error')">Try Again</base-button>
   </div>
 </template>
 
 <script>
 export default {
   name: "ErrorMessage",
-  emits: ["hide-error"],
-  methods: {
-    hideError() {
-      this.$emit("hide-error");
-    },
-  },
+  emits: ["hide-error"]
 };
 </script>
 
