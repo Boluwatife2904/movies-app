@@ -54,7 +54,7 @@ export default {
     const movies = ref([]);
     const emptyInput = ref(false);
 
-    const searchMovies = (term) => {
+    const searchMovies = async (term) => {
       if (term === "") {
         emptyInput.value = true;
         setTimeout(() => {
@@ -62,27 +62,24 @@ export default {
         }, 2000);
       } else {
         loading.value = true;
-        fetch(`https://www.omdbapi.com/?apikey=c4ee6fc4&s=${term}`)
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            }
-          })
-          .then((data) => {
-            if (data.Search) {
-              movies.value = data.Search;
-              setTimeout(() => {
-                loading.value = false;
-              }, 1000);
-              error.value = false;
-            } else {
-              error.value = true;
-            }
-          })
-          .catch(() => {
-            loading.value = false;
+        try {
+          const response = await fetch(
+            `https://www.omdbapi.com/?apikey=c4ee6fc4&s=${term}`
+          );
+          const responseData = await response.json();
+          if (responseData.Search) {
+            movies.value = responseData.Search;
+            setTimeout(() => {
+              loading.value = false;
+            }, 1000);
+            error.value = false;
+          } else {
             error.value = true;
-          });
+          }
+        } catch {
+          loading.value = false;
+          error.value = true;
+        }
       }
     };
 
