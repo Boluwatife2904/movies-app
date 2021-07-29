@@ -1,7 +1,7 @@
 # movie-app
 
 ## Project Live Preview
-[Project Live Preview](https://movies-app-eta.vercel.app)
+[Project Live Preview](https://findamovie.vercel.app)
 
 ## Project setup
 ```
